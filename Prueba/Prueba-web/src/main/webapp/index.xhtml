@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Inicio</title>
+    </h:head>
+   
+    <h:body>
+        <h:form>
+             <p:tabView scrollable="true">
+                <p:tab title="Universidad">
+                  <h:panelGrid columns="2"  cellpadding="5" styleClass="ui-grid">
+               
+                    <p:outputLabel value="Universidad" for="universidad" styleClass="requiredLbl"/>
+                    <p:autoComplete id="universidad" label="Universidad" value="#{universidad.nombre}" required="true" size="25">
+                    </p:autoComplete>
+                 
+                    <p:outputLabel value="Extension" for="extension" styleClass="requiredLbl"/>
+                    <p:autoComplete id="extension" label="Extension" value="#{universidad.extension}" required="true" size="25">
+                   </p:autoComplete>
+                    
+                    <p:outputLabel value="Fecha de Fundacion" for="fecha" styleClass="requiredLbl"/>
+                    <p:autoComplete id="fecha" label="Fecha de Fundacion" value="#{universidad.fecha}" required="true" size="25">
+                    </p:autoComplete>
+                    
+                     <p:outputLabel for="escudo" 
+                                   value="Escudo: "
+                                   styleClass="requiredLbl"/>
+                    <p:fileUpload id="escudo" fileUploadListener="#{universidad.handleFileUpload}" mode="advanced"
+                                  auto="true" sizeLimit="100000" 
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                    
+                    <p:commandButton value="Submit" id="nonAjax" action="#{universidad.crearUniversidad()}" style="margin-right:20px;" ajax="false" />
+                  </h:panelGrid>
+                </p:tab>
+            <p:tab title="Diplomado">
+                    <h:panelGrid columns="2"  cellpadding="5" styleClass="ui-grid">
+                  <p:outputLabel value="Universidad *" for="uni" styleClass="requiredLbl"/>
+                  <p:selectOneMenu id="uni" value="#{diplomado.univer}" style="width:130px">
+                            <f:selectItem itemLabel="Seleccione la universidad" itemValue="" noSelectionOption="true" />
+                            <f:selectItems  var="univ" value="#{diplomado.universidad}"  itemLabel="#{univ.nombre}"
+                                       itemValue="#{univ.id}"/>
+                            <p:ajax update="uni"/>
+                        </p:selectOneMenu>
+                    
+                        
+                    <p:outputLabel value="Diplomados" for="diplomados" styleClass="requiredLbl"/>
+                    <p:autoComplete id="diplomados" label="diplomados" value="#{diplomado.nombre}" required="true" size="25">
+                    </p:autoComplete>
+                 
+                    <p:outputLabel value="Fecha de inicio" for="inicio" styleClass="requiredLbl"/>
+                    <p:autoComplete id="inicio" label="inicio" value="#{diplomado.fecha}" required="true" size="25">
+                    </p:autoComplete>
+                    
+                    <p:outputLabel value="Fecha de Final" for="fechaf" styleClass="requiredLbl"/>
+                    <p:autoComplete id="fechaf" label="Fecha final" value="#{diplomado.fechaFinal}" required="true" size="25">
+                    </p:autoComplete>
+                    
+                    <p:commandButton value="Submirt" id="nonAjasx" action="#{diplomado.crearDiplomado()}" style="margin-right:20px;" ajax="false" />
+                  </h:panelGrid>
+            </p:tab>
+            <p:tab title="Estudiante"> 
+                <h:panelGrid columns="2"  cellpadding="5" styleClass="ui-grid">
+                       <p:outputLabel value="Diplomado *" for="diplo" styleClass="requiredLbl"/>
+                       <p:selectOneMenu id="diplo" value="#{estudiante.dipo}" style="width:130px">
+                            <f:selectItem itemLabel="Seleccione la diplomado" itemValue="" noSelectionOption="true" />
+                            <f:selectItems var="dip" value="#{estudiante.diplomados}" itemLabel="#{dip.nombre}"
+                                       itemValue="#{dip.id}"/>
+                        </p:selectOneMenu>
+                    
+                                       
+                    <p:outputLabel value="Estudiante" for="estudiante" styleClass="requiredLbl"/>
+                    <p:autoComplete id="estudiante" label="estudiante" value="#{estudiante.nombre}" required="true" size="25">
+                    </p:autoComplete>
+                 
+                    <p:outputLabel value="Edad" for="edad" styleClass="requiredLbl"/>
+                    <p:autoComplete id="edad" label="Extension" value="#{estudiante.edad}" required="true" size="25">
+                    </p:autoComplete>
+                   
+                     <p:outputLabel for="foto" 
+                                   value="Foto: "
+                                   styleClass="requiredLbl"/>
+                    <p:fileUpload id="foto" fileUploadListener="#{estudiante.handleFileUpload}" mode="advanced"
+                                  auto="true" sizeLimit="100000" 
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                  
+                    <p:commandButton value="Submit1" id="nonAjax1" action="#{estudiante.crearEstudiante()}" style="margin-right:20px;" ajax="false" />
+                  </h:panelGrid>
+            </p:tab>
+            <p:tab title="Consultar"> 
+        <h:form id="consultar">
+            <p:growl id="editado" />
+            <p:dataTable id="Consultar" var="vist" editable="true" value="#{consulta.listar}">
+
+                <p:column headerText="Universidad" style="display: none">
+                    <h:outputText value="#{vist.nombre}" />
+                </p:column>
+                <p:column headerText="Extension">
+                    <h:outputText value="#{vist.extension}" />
+                </p:column>
+                <p:column headerText="Diplomado">
+                    <h:outputText value="#{vist.nombre}" />
+                </p:column>
+                <p:column headerText="Fecha Inicio">
+                    <h:outputText value="#{vist.fechaInicial}">
+                        <f:convertDateTime type="date" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha Fin">
+                    <h:outputText value="#{vist.fechaFinal}" >
+                        <f:convertDateTime type="date" pattern="dd/MM/YYYY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Estudiante">
+                    <h:outputText value="#{vist.nombre}" />
+                </p:column>
+                <p:column headerText="Foto">
+                    <p:graphicImage name="#{vist.foto}" height="50px" width="50px"/>
+                </p:column>
+            </p:dataTable>
+             </h:form>
+            </p:tab>              
+    </p:tabView>
+               
+    </h:form>
+          
+    </h:body>
+</html>
+
